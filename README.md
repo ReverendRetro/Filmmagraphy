@@ -107,4 +107,51 @@ Delete the movies.db file.
 
 Restart the application (python app.py).
 
+# Running as a Systemd Service (Linux)
+
+To ensure the application runs continuously and starts automatically on boot, you can set it up as a systemd service.
+
+Create a service file:
+Open a new service file for editing using a terminal text editor like nano. You will need administrator privileges (sudo).
+```
+sudo nano /etc/systemd/system/filmmagraphy.service
+```
+Add the service configuration:
+aste the following configuration into the file. You must replace /path/to/your/project with the actual, absolute path to your project folder.
+```
+    [Unit]
+    Description=Filmmagraphy Movie Collection App
+    After=network.target
+
+    [Service]
+    User=your_username
+    Group=your_username
+    WorkingDirectory=/path/to/your/project
+    ExecStart=/path/to/your/project/venv/bin/python app.py
+    Restart=always
+
+    [Install]
+    WantedBy=multi-user.target
+```
+Replace your_username with the Linux username you want to run the application as.
+
+Save the file and exit nano (press Ctrl+X, then Y, then Enter).
+
+Enable and start the service:
+# Reload the systemd daemon to read the new service file
+`sudo systemctl daemon-reload`
+
+# Enable the service to start on boot
+`sudo systemctl enable filmmagraphy.service`
+
+# Start the service immediately
+`sudo systemctl start filmmagraphy.service`
+
+Check the status:
+You can verify that the service is running correctly with the following command:
+
+`sudo systemctl status filmmagraphy.service`
+
+If everything is working, you should see an "active (running)" status.
+
 A new, empty database with the correct structure will be created.
